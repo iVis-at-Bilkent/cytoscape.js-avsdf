@@ -12,20 +12,20 @@
 		<!-- for testing with local version of cytoscape.js -->
 		<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
 
+		<!--polyfills are needed for this extension for old browsers like IE -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/shim.min.js"></script>
+		<script src="https://raw.githack.com/iVis-at-Bilkent/layout-base/unstable/layout-base.js"></script>
 		<script src="cytoscape-avsdf.js"></script>
 
 		<style>
 			body {
-				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+				font-family: helvetica;
 				font-size: 14px;
 			}
 
 			#cy {
-				position: absolute;
-				left: 0;
-				top: 0;
-				bottom: 0;
-				right: 0;
+				width: 100%;
+				height: 90%;
 				z-index: 999;
 			}
 
@@ -33,6 +33,10 @@
 				opacity: 0.5;
 				font-size: 1em;
 				font-weight: bold;
+			}
+
+			button {
+				margin-right: 10px;
 			}
 		</style>
 
@@ -45,56 +49,99 @@
 					// demo your layout
 					layout: {
 						name: 'avsdf',
-
-						// some more options here...
+						animate: false,
+						randomize: true
 					},
 
 					style: [
 						{
 							selector: 'node',
 							style: {
-								'content': 'data(name)'
+                                'background-color': '#ad1a66'
 							}
 						},
 
 						{
 							selector: 'edge',
 							style: {
-								'curve-style': 'bezier',
-								'target-arrow-shape': 'triangle'
+                                'width': 3,
+                                'line-color': '#ad1a66'
 							}
 						}
 					],
 
 					elements: {
 						nodes: [
-							{ data: { id: 'j', name: 'Jerry' } },
-							{ data: { id: 'e', name: 'Elaine' } },
-							{ data: { id: 'k', name: 'Kramer' } },
-							{ data: { id: 'g', name: 'George' } }
+							{ data: { id: '1', name: 'Jerry' } },
+							{ data: { id: '2', name: 'Elaine' } },
+							{ data: { id: '3', name: 'Kramer' } },
+							{ data: { id: '4', name: 'George' } },
+                            { data: { id: '5', name: 'Jerry' } },
+                            { data: { id: '6', name: 'Elaine' } },
+                            { data: { id: '7', name: 'Kramer' } },
+                            { data: { id: '8', name: 'George' } },
+                            { data: { id: '9', name: 'Jerry' } },
+                            { data: { id: '10', name: 'Elaine' } },
+                            { data: { id: '11', name: 'Kramer' } },
+                            { data: { id: '12', name: 'George' } }
 						],
 						edges: [
-							{ data: { source: 'j', target: 'e' } },
-							{ data: { source: 'j', target: 'k' } },
-							{ data: { source: 'j', target: 'g' } },
-							{ data: { source: 'e', target: 'j' } },
-							{ data: { source: 'e', target: 'k' } },
-							{ data: { source: 'k', target: 'j' } },
-							{ data: { source: 'k', target: 'e' } },
-							{ data: { source: 'k', target: 'g' } },
-							{ data: { source: 'g', target: 'j' } }
+							{ data: { source: '1', target: '11' } },
+							{ data: { source: '1', target: '7' } },
+							{ data: { source: '1', target: '3' } },
+							{ data: { source: '2', target: '3' } },
+							{ data: { source: '2', target: '10' } },
+							{ data: { source: '3', target: '11' } },
+							{ data: { source: '3', target: '6' } },
+							{ data: { source: '3', target: '7' } },
+							{ data: { source: '3', target: '4' } },
+                            { data: { source: '3', target: '10' } },
+                            { data: { source: '4', target: '1' } },
+                            { data: { source: '5', target: '1' } },
+                            { data: { source: '5', target: '3' } },
+                            { data: { source: '5', target: '7' } },
+                            { data: { source: '5', target: '9' } },
+                            { data: { source: '5', target: '10' } },
+                            { data: { source: '5', target: '11' } },
+                            { data: { source: '6', target: '1' } },
+                            { data: { source: '7', target: '2' } },
+                            { data: { source: '8', target: '6' } },
+                            { data: { source: '8', target: '10' } },
+                            { data: { source: '8', target: '9' } }
 						]
 					}
 				});
 
+                document.getElementById("layoutButton").addEventListener("click", function(){
+                    var layout = cy.layout({
+                        name: 'avsdf',
+                        animate: 'end',
+                        animationEasing: 'ease-out',
+                        randomize: true
+                    });
+                    layout.run();
+                });
+
+                document.getElementById("randomize").addEventListener("click", function(){
+                    var layout = cy.layout({
+                        name: 'random',
+                        animate: true,
+                        animationDuration: 1000,
+                        animationEasing: 'ease-out'
+                    });
+                    layout.run();
+                });
 
 			});
 		</script>
 	</head>
 
 	<body>
+
 		<h1>cytoscape-avsdf demo</h1>
 
+		<button id="randomize" type="button">Randomize</button>
+		<button id="layoutButton" type="button">AVSDF</button>
 		<div id="cy"></div>
 
 	</body>

@@ -4,7 +4,7 @@ cytoscape-avsdf
 
 ## Description
 
-An implementation of the circular layout algorithm by He &amp; Sykora  ([demo](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf))
+An implementation of the circular layout algorithm by He &amp; Sykora  ([demo 1](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf/demo.html) [demo 2](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf/demo_2.html))
 
 ## Dependencies
 
