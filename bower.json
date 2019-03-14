@@ -1,6 +1,6 @@
 {
   "name": "cytoscape-avsdf",
-  "description": "An implementation of the circular layout algorithm by He &amp; Sykora ",
+  "description": "An implementation of the circular layout algorithm by He &amp; Sykora",
   "main": "cytoscape-avsdf.js",
   "dependencies": {
     "cytoscape": "^3.2.0"

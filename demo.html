@@ -12,20 +12,21 @@
 		<!-- for testing with local version of cytoscape.js -->
 		<!--<script src="../cytoscape.js/build/cytoscape.js"></script>-->
 
+		<!--polyfills are needed for this extension for old browsers like IE -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/shim.min.js"></script>
+		<script src="https://raw.githack.com/iVis-at-Bilkent/layout-base/unstable/layout-base.js"></script>
+		<script src="node_modules/avsdf-base/avsdf-base.js"></script>
 		<script src="cytoscape-avsdf.js"></script>
 
 		<style>
 			body {
-				font-family: helvetica neue, helvetica, liberation sans, arial, sans-serif;
+				font-family: helvetica;
 				font-size: 14px;
 			}
 
 			#cy {
-				position: absolute;
-				left: 0;
-				top: 0;
-				bottom: 0;
-				right: 0;
+				width: 100%;
+				height: 90%;
 				z-index: 999;
 			}
 
@@ -33,6 +34,10 @@
 				opacity: 0.5;
 				font-size: 1em;
 				font-weight: bold;
+			}
+
+			button {
+				margin-right: 10px;
 			}
 		</style>
 
@@ -42,50 +47,87 @@
 				var cy = window.cy = cytoscape({
 					container: document.getElementById('cy'),
 
-					// demo your layout
 					layout: {
 						name: 'avsdf',
-
-						// some more options here...
+						nodeSeparation: '150'
 					},
 
 					style: [
 						{
 							selector: 'node',
 							style: {
-								'content': 'data(name)'
+								'content': 'data(id)',
+								'background-color': '#ad1a66'
 							}
 						},
 
 						{
 							selector: 'edge',
 							style: {
-								'curve-style': 'bezier',
-								'target-arrow-shape': 'triangle'
+								'width': 2,
+								'line-color': '#ad1a66',
+								'opacity': 0.5
 							}
 						}
 					],
 
 					elements: {
 						nodes: [
-							{ data: { id: 'j', name: 'Jerry' } },
-							{ data: { id: 'e', name: 'Elaine' } },
-							{ data: { id: 'k', name: 'Kramer' } },
-							{ data: { id: 'g', name: 'George' } }
+							{ data: { id: 'v0'} },
+							{ data: { id: 'v1'} },
+							{ data: { id: 'v2'} },
+							{ data: { id: 'v3'} },
+							{ data: { id: 'v4'} },
+							{ data: { id: 'v5'} },
+							{ data: { id: 'v6'} },
+							{ data: { id: 'v7'} },
+							{ data: { id: 'v8'} },
+							{ data: { id: 'v9'} },
+							{ data: { id: 'v10'} },
 						],
 						edges: [
-							{ data: { source: 'j', target: 'e' } },
-							{ data: { source: 'j', target: 'k' } },
-							{ data: { source: 'j', target: 'g' } },
-							{ data: { source: 'e', target: 'j' } },
-							{ data: { source: 'e', target: 'k' } },
-							{ data: { source: 'k', target: 'j' } },
-							{ data: { source: 'k', target: 'e' } },
-							{ data: { source: 'k', target: 'g' } },
-							{ data: { source: 'g', target: 'j' } }
+							{ data: { source: 'v0', target: 'v1', directed: 'false'} },
+							{ data: { source: 'v0', target: 'v2', directed: 'false'} },
+							{ data: { source: 'v0', target: 'v3', directed: 'false'} },
+							{ data: { source: 'v0', target: 'v4', directed: 'false'} },
+							{ data: { source: 'v0', target: 'v9', directed: 'false'} },
+							{ data: { source: 'v1', target: 'v2', directed: 'false'} },
+							{ data: { source: 'v1', target: 'v5', directed: 'false'} },
+							{ data: { source: 'v1', target: 'v6', directed: 'false'} },
+							{ data: { source: 'v2', target: 'v7', directed: 'false'} },
+							{ data: { source: 'v2', target: 'v8', directed: 'false'} },
+							{ data: { source: 'v3', target: 'v4', directed: 'false'} },
+							{ data: { source: 'v3', target: 'v9', directed: 'false'} },
+							{ data: { source: 'v3', target: 'v10', directed: 'false'} },
+							{ data: { source: 'v4', target: 'v10', directed: 'false'} },
+							{ data: { source: 'v5', target: 'v6', directed: 'false'} },
+							{ data: { source: 'v6', target: 'v10', directed: 'false'} },
+							{ data: { source: 'v7', target: 'v8', directed: 'false'} },
+							{ data: { source: 'v8', target: 'v10', directed: 'false'} }
 						]
 					}
 				});
+
+				document.getElementById("layoutButton").addEventListener("click", function(){
+					var layout = cy.layout({
+						name: 'avsdf',
+						animate: 'end',
+						animationEasing: 'ease-out',
+						randomize: true
+					});
+					layout.run();
+				});
+
+				document.getElementById("randomize").addEventListener("click", function(){
+					var layout = cy.layout({
+						name: 'random',
+						animate: true,
+						animationDuration: 1000,
+						animationEasing: 'ease-out'
+					});
+					layout.run();
+				});
+
 
 
 			});
@@ -95,6 +137,8 @@
 	<body>
 		<h1>cytoscape-avsdf demo</h1>
 
+		<button id="randomize" type="button">Randomize</button>
+		<button id="layoutButton" type="button">AVSDF</button>
 		<div id="cy"></div>
 
 	</body>

@@ -1,12 +1,12 @@
 {
   "name": "cytoscape-avsdf",
-  "version": "0.0.0",
-  "description": "An implementation of the circular layout algorithm by He &amp; Sykora ",
-  "main": "cytoscape-avsdf.js",
+  "version": "1.0.0",
+  "description": "An implementation of the circular layout algorithm by He &amp; Sykora",
   "author": {
-    "name": "iVis",
+    "name": "i-Vis (Information Visualization) Research Lab",
     "email": "ivis@cs.bilkent.edu.tr"
   },
+  "main": "cytoscape-avsdf.js",
   "scripts": {
     "postpublish": "run-s gh-pages:demo gh-pages:deploy gh-pages:clean",
     "gh-pages:demo": "cpy demo.html . --rename=index.html",
@@ -56,6 +56,6 @@
     "cytoscape": "^3.2.0"
   },
   "dependencies": {
-    "layout-base": "https://github.com/iVis-at-Bilkent/layout-base#unstable"
+    "avsdf-base": "https://github.com/iVis-at-Bilkent/avsdf-base#unstable"
   }
 }
