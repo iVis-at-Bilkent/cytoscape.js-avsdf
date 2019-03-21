@@ -9,15 +9,15 @@
  * Copyright: i-Vis (Information Visualization) Research Lab, Bilkent University, 2019 - present
 */
 
-//cytosscape.js-avsdf REQUIRES avsdf-base library elements
+// cytosscape.js-avsdf REQUIRES avsdf-base library elements
 const AVSDFLayout = require('avsdf-base').AVSDFLayout;
 const AVSDFNode = require('avsdf-base').AVSDFNode;
 const AVSDFConstants = require('avsdf-base').AVSDFConstants;
 const PointD = require('avsdf-base').layoutBase.PointD;
 const DimensionD = require('avsdf-base').layoutBase.DimensionD;
 
-//Cytoscape-extention template requirements
-//More details can be found in NPM 'slush-cytoscape-extension' package
+// Cytoscape-extention template requirements
+// More details can be found in NPM 'slush-cytoscape-extension' package
 const assign = require('../assign');
 const ContinuousLayout = require('./continuous-base');
 
@@ -36,49 +36,45 @@ let defaults = {
   refresh: 30,  // number of ticks per frame; higher is faster but more jerky
   fit: true,   // Whether to fit the network view after when done
   padding: 10,   // Padding on fit
-  randomize: true,   // Whether to enable incremental mode
-  numIter: undefined,   // Maximum number of iterations to perform
+  randomize: false,   // Whether to enable incremental mode
   animate: 'end',   // Type of layout animation. The option set is {'during', 'end', false}
   animationDuration: 500,   // Duration for animate:end
-  nodeSeparation: '60',
-
-  // Represents the amount of the vertical space to put between the zero degree members during the tiling operation(can also be a function)
-  tilingPaddingVertical: 10,
-
-  // Represents the amount of the horizontal space to put between the zero degree members during the tiling operation(can also be a function)
-  tilingPaddingHorizontal: 10
+  nodeSeparation: 60, // How apart the nodes are
 };
 
+/**
+ *  This is the main class that does all the functionality.
+ *  The class is utilized by functions in the continuous-base folder.
+ */
 class AVSDF extends ContinuousLayout {
   constructor( options ){
     super( assign( {}, defaults, options ) );
 
+    // Whether node separation value is used
     if(options.nodeSeparation != null)
       AVSDFConstants.DEFAULT_NODE_SEPARATION = options.nodeSeparation;
     else
       AVSDFConstants.DEFAULT_NODE_SEPARATION = defaults.nodeSeparation;
   }
 
-  //Initializing AVSDF elements and arranging the nodes of the graph around the circle
+  /**
+   *  Initializing AVSDF elements and arranging the nodes of the graph around the circle
+   */
   prerun(){
     let state = this.state; // options object combined with current state
 
-    let self = this;
-    let options = this.options; // TODO Do we need it?
-
-    //Initialize AVSDF elements
+    // Initialize AVSDF elements and their requirements
     let avsdfLayout = this.avsdfLayout = new AVSDFLayout();
     let graphManager = this.graphManager = avsdfLayout.newGraphManager();
-
+    let root = this.root = graphManager.addRoot();
     let nodes = state.nodes;
     let edges = state.edges;
 
-    let root = this.root = graphManager.addRoot();
+    // Getting nodes of cytoscape and converting it to AVSDF structure
     this.idToLNode = {};
-    //Getting nodes of cytoscape and converting it to AVSDF structure
     this.processChildrenList(root, nodes, avsdfLayout);
 
-    //Adding edges of cytoscape and transfering it to GraphManager
+    // Getting edges of cytoscape and transfering it to GraphManager
     for (let i = 0; i < edges.length; i++)
     {
       let edge = edges[i];
@@ -91,59 +87,67 @@ class AVSDF extends ContinuousLayout {
       }
     }
 
-    avsdfLayout.layout(); //TODO Change name?
+    // Running the AVSDF layout.
+    // Note: This function doesn't do post-processing. Plus, nodes have to be positioned.
+    // See AVSDFLayout for details.
+    avsdfLayout.layout();
 
-    self.options.eles.nodes().layoutPositions(self, self.options, getPositions);
+    // We need to calculate the initial circle position if we want to render it
+    avsdfLayout.updateNodeCoordinates();
 
-    function getPositions(ele, i)
-    {
-      if(typeof ele === "number")
-      {
-        ele = i;
-      }
-      let theId = ele.data('id');
-      let lNode = self.idToLNode[theId];
-
-      return {
-        x: lNode.getRect().getCenterX(),
-        y: lNode.getRect().getCenterY()
-      };
-    }
+    // Post process is iterated over the sorted list of vertex degrees (descending)
+    this.sortedByDegreeList = avsdfLayout.initPostProcess();
   }
 
-  // run this each iteraction
+
+  /**
+   *  Runs this in each iteration
+   */
   tick(){
     let state = this.state;
-    let isDone = true;
 
-    // TODO update state for this iteration
+    // This function is used for getting coordinates from AVSDF elements and passing it to cytoscape
+    let positions = this.avsdfLayout.getPositionsData();
+    let getPositions = function(ele, i){
+      if(typeof ele === "number") {
+        ele = i;
+      }
 
-    /*
-    state.nodes.forEach( n => {
-      let s = this.getScratch(n);
+      let lNode = positions[ele.data('id')];
 
-      // example : put node at random position
-      s.x = Math.random() * 100;
-      s.y = Math.random() * 100;
-    } );
-    */
+      return {
+        x: lNode.x,
+        y: lNode.y
+      };
+    };
+    this.options.eles.nodes().layoutPositions(this, this.options, getPositions);
 
-    return isDone;
+    if(state.tickIndex >= state.nodes.size())
+      return true;
+
+      this.avsdfLayout.oneStepPostProcess(this.sortedByDegreeList[state.tickIndex]);
+      this.avsdfLayout.updateNodeAngles();
+      this.avsdfLayout.updateNodeCoordinates();
+
   }
 
-  // run this function after the layout is done ticking
+  /**
+   *  Runs this function after the layout is done ticking
+   */
   postrun(){
-
   }
 
-  // clean up any object refs that could prevent garbage collection, etc.
+  /**
+   *  Clean up any object refs that could prevent garbage collection, etc.
+   */
   destroy(){
     super.destroy();
-
     return this;
   }
 
-  //Transition from cytoscape nodes to AVSDF elements
+  /**
+   *  Transition from cytoscape nodes to AVSDF elements
+   */
   processChildrenList(parent, children, layout) {
     let size = children.length;
     for (let i = 0; i < size; i++)

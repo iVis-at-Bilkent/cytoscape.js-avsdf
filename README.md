@@ -4,13 +4,11 @@ cytoscape-avsdf
 
 ## Description
 
-An implementation of the circular layout algorithm by He &amp; Sykora ([demo](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf))
+An implementation of the [Circular Drawing Algorithm](https://www.researchgate.net/publication/229019459_New_circular_drawing_algorithms) by Hongmei He & Ondrej Sýkora. ([demo](https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-avsdf/unstable/demo.html))
 
 ## Dependencies
 
  * Cytoscape.js ^3.2.0
- * <List your dependencies here please>
-
 
 ## Usage instructions
 
@@ -52,8 +50,32 @@ Plain HTML/JS has the extension registered for you automatically, because no `re
 
 ## API
 
-TODO describe the API of the extension here.
+When calling the layout, e.g. `cy.layout({ name: 'avsdf-base', ... })`, the following options are supported:
 
+```js
+var defaultOptions = {
+    // Called on `layoutready`
+    ready: function () {
+    },
+    // Called on `layoutstop`
+    stop: function () {
+    },
+    // number of ticks per frame; higher is faster but more jerky
+    refresh: 30,
+    // Whether to fit the network view after when done
+    fit: true,
+    // Padding on fit
+    padding: 10,
+    // Prevent the user grabbing nodes during the layout (usually with animate:true)
+    ungrabifyWhileSimulating: false,
+    // Type of layout animation. The option set is {'during', 'end', false}
+    animate: 'end',
+    // Duration for animate:end
+    animationDuration: 500,   
+    // How apart the nodes are
+    nodeSeparation: 60
+};
+```
 
 ## Build targets
 
