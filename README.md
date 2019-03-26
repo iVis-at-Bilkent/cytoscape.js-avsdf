@@ -4,7 +4,9 @@ cytoscape-avsdf
 
 ## Description
 
-An implementation of the [Circular Drawing Algorithm](https://www.researchgate.net/publication/229019459_New_circular_drawing_algorithms) by Hongmei He & Ondrej Sýkora. ([demo](https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-avsdf/unstable/demo.html))
+An implementation of the [Circular Drawing Algorithm](https://www.researchgate.net/publication/229019459_New_circular_drawing_algorithms) by Hongmei He & Ondrej Sýkora.
+
+Click [here](https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-avsdf/unstable/demo.html) for a demo.
 
 ## Dependencies
 
