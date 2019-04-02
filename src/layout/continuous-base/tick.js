@@ -1,3 +1,4 @@
+
 const nop = function(){};
 
 let tick = function( state ){
@@ -15,7 +16,7 @@ let tick = function( state ){
 
   s.tickIndex++;
 
-  let duration = s.startTime - Date.now();
+  let duration = Date.now() - s.startTime;
 
   return !s.infinite && ( tickIndicatesDone );
 };

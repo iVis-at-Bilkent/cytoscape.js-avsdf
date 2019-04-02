@@ -3,6 +3,7 @@
 module.exports = Object.freeze({
   animate: true, // whether to show the layout as it's running; special 'end' value makes the layout animate like a discrete layout
   refresh: 10, // number of ticks per frame; higher is faster but more jerky
+  maxIterations: 1000, // max iterations before the layout will bail out
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
   fit: true, // on every layout reposition of nodes, fit the viewport
   padding: 30, // padding around the simulation
@@ -14,7 +15,7 @@ module.exports = Object.freeze({
 
   // positioning options
   randomize: false, // use random node positions at beginning of layout
-  
+
   // infinite layout options
   infinite: false // overrides all other options for a forces-all-the-time mode
 });

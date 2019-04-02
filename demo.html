@@ -11,12 +11,20 @@
 
 		<!--polyfills are needed for this extension for old browsers like IE -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.5.7/shim.min.js"></script>
+
+		<!-- jQuery library -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<!-- Bootstrap JS -->
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+		<script src="https://raw.githack.com/iVis-at-Bilkent/layout-base/unstable/layout-base.js"></script>
+		<script src="https://raw.githack.com/iVis-at-Bilkent/avsdf-base/unstable/avsdf-base.js"></script>
 		<script src="cytoscape-avsdf.js"></script>
 
 		<style>
 			body {
 				font-family: helvetica;
-				font-size: 14px;
+				font-size: 15px;
 			}
 
 			#cy {
@@ -32,8 +40,22 @@
 			}
 
 			button {
+				font-size: 15px;
 				margin-right: 10px;
 			}
+
+			.line {
+				clear:left;
+				height:25px;
+				margin-top:6px;
+				margin-right:6px;
+				margin-bottom:6px;
+			}
+
+			.radio {
+				margin-left:25px;
+			}
+
 		</style>
 
 		<script>
@@ -70,70 +92,68 @@
 
 					elements: {
 						nodes: [
-							{ data: { id: 'v1'} },
-							{ data: { id: 'v2'} },
-							{ data: { id: 'v3'} },
-							{ data: { id: 'v4'} },
-							{ data: { id: 'v5'} },
-							{ data: { id: 'v6'} },
-							{ data: { id: 'v7'} },
-							{ data: { id: 'v8'} },
-							{ data: { id: 'v9'} },
-							{ data: { id: 'v10'} },
-							{ data: { id: 'v11'} },
+							{ data: { id: 'v1', weight: 1} },
+							{ data: { id: 'v2', weight: 2} },
+							{ data: { id: 'v3', weight: 3} },
+							{ data: { id: 'v4', weight: 4} },
+							{ data: { id: 'v5', weight: 5} },
+							{ data: { id: 'v6', weight: 6} },
+							{ data: { id: 'v7', weight: 7} }
 						],
 						edges: [
-							{ data: { source: 'v9', target: 'v4', directed: 'false'} },
-							{ data: { source: 'v7', target: 'v2', directed: 'false'} },
-							{ data: { source: 'v6', target: 'v5', directed: 'false'} },
-							{ data: { source: 'v7', target: 'v6', directed: 'false'} },
-							{ data: { source: 'v9', target: 'v10', directed: 'false'} },
-							{ data: { source: 'v4', target: 'v3', directed: 'false'} },
-							{ data: { source: 'v8', target: 'v1', directed: 'false'} },
-							{ data: { source: 'v9', target: 'v6', directed: 'false'} },
-							{ data: { source: 'v1', target: 'v9', directed: 'false'} },
-							{ data: { source: 'v11', target: 'v4', directed: 'false'} },
-							{ data: { source: 'v11', target: 'v8', directed: 'false'} },
-							{ data: { source: 'v10', target: 'v4', directed: 'false'} },
-							{ data: { source: 'v5', target: 'v8', directed: 'false'} },
-							{ data: { source: 'v7', target: 'v3', directed: 'false'} },
-							{ data: { source: 'v5', target: 'v3', directed: 'false'} },
-							{ data: { source: 'v9', target: 'v8', directed: 'false'} },
-							{ data: { source: 'v10', target: 'v3', directed: 'false'} },
-							{ data: { source: 'v11', target: 'v5', directed: 'false'} },
-							{ data: { source: 'v11', target: 'v1', directed: 'false'} },
-							{ data: { source: 'v3', target: 'v2', directed: 'false'} },
-							{ data: { source: 'v11', target: 'v2', directed: 'false'} },
-							{ data: { source: 'v5', target: 'v9', directed: 'false'} },
-							{ data: { source: 'v9', target: 'v11', directed: 'false'} },
-							{ data: { source: 'v6', target: 'v10', directed: 'false'} }
+							{ data: { source: 'v1', target: 'v2', directed: 'false'} },
+							{ data: { source: 'v1', target: 'v4', directed: 'false'} },
+							{ data: { source: 'v1', target: 'v5', directed: 'false'} },
+							{ data: { source: 'v2', target: 'v4', directed: 'false'} },
+							{ data: { source: 'v2', target: 'v6', directed: 'false'} },
+							{ data: { source: 'v3', target: 'v4', directed: 'false'} },
+							{ data: { source: 'v3', target: 'v7', directed: 'false'} },
+							{ data: { source: 'v4', target: 'v5', directed: 'false'} },
+							{ data: { source: 'v4', target: 'v7', directed: 'false'} },
+							{ data: { source: 'v5', target: 'v6', directed: 'false'} },
+							{ data: { source: 'v6', target: 'v7', directed: 'false'} },
+							{ data: { source: 'v6', target: 'v3', directed: 'false'} }
 						]
 					}
 				});
 
 				document.getElementById("layoutButton").addEventListener("click", function(){
-					var layout = cy.layout({
-						name: 'avsdf',
-						refresh: 1,
-						animate: "during",
-						animationDuration: 1000,
-						animationEasing: 'ease-in-out',
-						nodeSeparation: 120
-					});
+					if(document.getElementById("end").checked) {
+						var layout = cy.layout({
+							name: 'avsdf',
+							animate: "end",
+							animationDuration: 1000,
+							animationEasing: 'ease-in-out',
+							nodeSeparation: 120
+						});
+					} else{
+						var layout = cy.layout({
+							name: 'avsdf',
+							refresh: 1,
+							animate: "during",
+							animationDuration: 1000,
+							animationEasing: 'ease-in-out',
+							nodeSeparation: 120
+						});
+					}
 					layout.run();
 				});
 
 				document.getElementById("randomize").addEventListener("click", function(){
+					cy.nodes().forEach(function(ele){
+						ele.data().weight = Math.floor((Math.random() * 10) + 1);
+					});
+
 					var layout = cy.layout({
-						name: 'random',
+						name: 'circle',
 						animate: true,
+						sort: function(a, b){ return a.data('weight') - b.data('weight') },
+						radius: 120,
 						animationDuration: 1000,
 						animationEasing: 'ease-in-out'
 					});
 					layout.run();
 				});
-
-
 
 			});
 		</script>
@@ -141,8 +161,17 @@
 
 	<body>
 		<h1>cytoscape-avsdf demo</h1>
-		<button id="randomize" type="button">Randomize</button>
+		<div class="line">
+			Animation Type:
+			<input type="radio" name="radio" id="end" class="radio" value="end" checked> End
+			<input type="radio" name="radio" id="during" class="radio" value="during"> During <br>
+		</div>
+		<a data-toggle="tooltip" data-placement="auto" title="Places the nodes circularly as a randomly permuted sequence">
+			<button id="randomize" type="button">Randomize</button>
+		</a>
+		<a data-toggle="tooltip" data-placement="auto" title="Places the nodes circularly with respect to AVSDF layout">
 		<button id="layoutButton" type="button">AVSDF</button>
+		</a>
 
 		<div id="cy"></div>
 

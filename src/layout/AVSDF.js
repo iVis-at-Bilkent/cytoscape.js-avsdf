@@ -99,28 +99,22 @@ class AVSDF extends ContinuousLayout {
     this.sortedByDegreeList = avsdfLayout.initPostProcess();
   }
 
-
   /**
    *  Runs this in each iteration
    */
   tick(){
     let state = this.state;
+    let self = this;
 
     // This function is used for getting coordinates from AVSDF elements and passing it to cytoscape
     let positions = this.avsdfLayout.getPositionsData();
-    let getPositions = function(ele, i){
-      if(typeof ele === "number") {
-        ele = i;
-      }
+    state.nodes.forEach( n => {
+      let s = this.getScratch(n);
 
-      let lNode = positions[ele.data('id')];
-
-      return {
-        x: lNode.x,
-        y: lNode.y
-      };
-    };
-    this.options.eles.nodes().layoutPositions(this, this.options, getPositions);
+      // example : put node at random position
+      s.x = positions[n.data('id')].x;
+      s.y = positions[n.data('id')].y;
+    } );
 
     if(state.tickIndex >= state.nodes.size())
       return true;
@@ -128,7 +122,6 @@ class AVSDF extends ContinuousLayout {
       this.avsdfLayout.oneStepPostProcess(this.sortedByDegreeList[state.tickIndex]);
       this.avsdfLayout.updateNodeAngles();
       this.avsdfLayout.updateNodeCoordinates();
-
   }
 
   /**
@@ -195,7 +188,6 @@ class AVSDF extends ContinuousLayout {
       {
         theNode.rect.y = 0;
       }
-
     }
   }
 }
