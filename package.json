@@ -56,6 +56,6 @@
     "cytoscape": "^3.2.0"
   },
   "dependencies": {
-    "avsdf-base": "https://github.com/iVis-at-Bilkent/avsdf-base#unstable"
+    "avsdf-base": "^1.0.0"
   }
 }
