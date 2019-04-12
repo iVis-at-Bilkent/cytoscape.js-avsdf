@@ -23,12 +23,12 @@ let config = {
     ]
   },
   externals: PROD ? {
-      'layout-base': {
-          commonjs2: 'layout-base',
-          commonjs: 'layout-base',
-          amd: 'layout-base',
-          root: 'layoutBase'
-      }
+    'avsdf-base': {
+      commonjs2: 'avsdf-base',
+      commonjs: 'avsdf-base',
+      amd: 'avsdf-base',
+      root: 'avsdfBase'
+    }
   } : {},
   plugins: MIN ? [
     new webpack.optimize.UglifyJsPlugin({

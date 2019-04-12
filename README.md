@@ -4,13 +4,14 @@ cytoscape-avsdf
 
 ## Description
 
-An implementation of the circular layout algorithm by He &amp; Sykora  ([demo 1](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf/demo.html) [demo 2](https://iVis-at-Bilkent.github.io/cytoscape.js-avsdf/demo_2.html))
+An implementation of the [Circular Drawing Algorithm](https://www.researchgate.net/publication/229019459_New_circular_drawing_algorithms) by Hongmei He & Ondrej Sýkora.
+
+Click [here](https://ivis-at-bilkent.github.io/cytoscape.js-avsdf/demo.html) for a demo.
 
 ## Dependencies
 
  * Cytoscape.js ^3.2.0
- * <List your dependencies here please>
-
+ * avsdf-base ^1.0.0
 
 ## Usage instructions
 
@@ -52,8 +53,32 @@ Plain HTML/JS has the extension registered for you automatically, because no `re
 
 ## API
 
-TODO describe the API of the extension here.
+When calling the layout, e.g. `cy.layout({ name: 'avsdf-base', ... })`, the following options are supported:
 
+```js
+var defaultOptions = {
+    // Called on `layoutready`
+    ready: function () {
+    },
+    // Called on `layoutstop`
+    stop: function () {
+    },
+    // number of ticks per frame; higher is faster but more jerky
+    refresh: 30,
+    // Whether to fit the network view after when done
+    fit: true,
+    // Padding on fit
+    padding: 10,
+    // Prevent the user grabbing nodes during the layout (usually with animate:true)
+    ungrabifyWhileSimulating: false,
+    // Type of layout animation. The option set is {'during', 'end', false}
+    animate: 'end',
+    // Duration for animate:end
+    animationDuration: 500,   
+    // How apart the nodes are
+    nodeSeparation: 60
+};
+```
 
 ## Build targets
 
@@ -77,3 +102,7 @@ This project is set up to automatically be published to npm and bower.  To publi
 1. Publish to npm: `npm publish .`
 1. If publishing to bower for the first time, you'll need to run `bower register cytoscape-avsdf https://github.com/iVis-at-Bilkent/cytoscape.js-avsdf.git`
 1. [Make a new release](https://github.com/iVis-at-Bilkent/cytoscape.js-avsdf/releases/new) for Zenodo.
+
+## Team
+
+  * [Alihan Okka](https://github.com/alihanokka), Doruk Cakmakci, and [Ugur Dogrusoz](https://github.com/ugurdogrusoz) of [i-Vis at Bilkent University](http://www.cs.bilkent.edu.tr/~ivis)
