@@ -11,6 +11,7 @@ Click [here](https://raw.githack.com/iVis-at-Bilkent/cytoscape.js-avsdf/unstable
 ## Dependencies
 
  * Cytoscape.js ^3.2.0
+ * avsdf-base ^1.0.0
 
 ## Usage instructions
 
