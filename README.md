@@ -53,7 +53,7 @@ Plain HTML/JS has the extension registered for you automatically, because no `re
 
 ## API
 
-When calling the layout, e.g. `cy.layout({ name: 'avsdf-base', ... })`, the following options are supported:
+When calling the layout, e.g. `cy.layout({ name: 'avsdf', ... })`, the following options are supported:
 
 ```js
 var defaultOptions = {
